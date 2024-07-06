@@ -1,58 +1,57 @@
 package tinystrconv
 
-import (
-	"math"
-)
-
 // FloatToString converts a float to its string representation with the specified precision.
-func FloatToString(floatValue float64, precision int) string {
-	if math.IsNaN(floatValue) {
-		return "NaN"
+func FloatToString(f float64, precision int) (string, error) {
+	if f != f {
+		return "NaN", nil
 	}
-	if math.IsInf(floatValue, 1) {
-		return "+Inf"
+	if f > 1.7976931348623157e+308 {
+		return "+Inf", nil
 	}
-	if math.IsInf(floatValue, -1) {
-		return "-Inf"
-	}
-
-	isNegative := floatValue < 0
-	if isNegative {
-		floatValue = -floatValue
+	if f < -1.7976931348623157e+308 {
+		return "-Inf", nil
 	}
 
-	integerPart := int64(floatValue)
-	fractionalPart := floatValue - float64(integerPart)
-	result, _ := IntToString(int(integerPart), 10)
+	neg := f < 0
+	if neg {
+		f = -f
+	}
+
+	intPart := int64(f)
+	fracPart := f - float64(intPart)
+	result, err := IntToString(int(intPart), 10)
+	if err != nil {
+		return "", err
+	}
 
 	if precision > 0 {
 		result += "."
 		for i := 0; i < precision; i++ {
-			fractionalPart *= 10
-			digit := int64(fractionalPart)
+			fracPart *= 10
+			digit := int64(fracPart)
 			result += string('0' + rune(digit))
-			fractionalPart -= float64(digit)
+			fracPart -= float64(digit)
 		}
 		// Perform rounding if necessary
-		fractionalPart *= 10
-		if int64(fractionalPart) >= 5 {
+		fracPart *= 10
+		if int64(fracPart) >= 5 {
 			result = roundUp(result)
 		}
 	} else {
 		result += ".0"
 	}
 
-	if isNegative {
+	if neg {
 		result = "-" + result
 	}
 
-	return result
+	return result, nil
 }
 
 // roundUp handles rounding up the last digit if necessary.
-func roundUp(numberString string) string {
+func roundUp(s string) string {
 	carry := true
-	result := []byte(numberString)
+	result := []byte(s)
 	for i := len(result) - 1; i >= 0 && carry; i-- {
 		if result[i] == '.' {
 			continue
