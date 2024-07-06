@@ -2,8 +2,8 @@ package tinystrconv
 
 import "testing"
 
-// TestFormatFloat tests the FormatFloat function for converting floats to strings.
-func TestFormatFloat(t *testing.T) {
+// TestFloatToString tests the FloatToString function for converting floats to strings.
+func TestFloatToString(t *testing.T) {
 	testCases := []struct {
 		input     float64
 		precision int
@@ -17,9 +17,9 @@ func TestFormatFloat(t *testing.T) {
 	}
 
 	for _, testCase := range testCases {
-		got := FormatFloat(testCase.input, testCase.precision)
+		got := FloatToString(testCase.input, testCase.precision)
 		if got != testCase.want {
-			t.Errorf("FormatFloat(%f, %d) = %q, want %q", testCase.input, testCase.precision, got, testCase.want)
+			t.Errorf("FloatToString(%f, %d) = %q, want %q", testCase.input, testCase.precision, got, testCase.want)
 		}
 	}
 }
