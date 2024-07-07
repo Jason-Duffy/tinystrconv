@@ -1,8 +1,30 @@
+// =============================================================================
+// Project: tinystrconv
+// File: int_test.go
+// Description: Test suite for integer conversion functions.
+// Datasheet/Docs:
+//
+// Author: Jason Duffy
+// Created on: 06/07/2024
+//
+// Copyright: (C) 2024, Jason Duffy
+// License: See LICENSE file in the project root for full license information.
+// Disclaimer: See DISCLAIMER file in the project root for full disclaimer.
+// =============================================================================
+
+// -------------------------------------------------------------------------- //
+//                               Import Statement                             //
+// -------------------------------------------------------------------------- //
+
 package tinystrconv
 
 import (
 	"testing"
 )
+
+// -------------------------------------------------------------------------- //
+//                              Public Functions                              //
+// -------------------------------------------------------------------------- //
 
 // TestIntToString tests the IntToString function for converting integers to strings in various bases.
 func TestIntToString(t *testing.T) {
