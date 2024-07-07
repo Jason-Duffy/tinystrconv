@@ -61,8 +61,50 @@ func Format(format string, args ...interface{}) (string, error) {
 					}
 					result = append(result, []byte(BoolToString(boolVal))...)
 					argIndex++
+				case 'x':
+					if argIndex >= len(args) {
+						return "", errors.New("missing argument for %x")
+					}
+					intVal, ok := args[argIndex].(int)
+					if !ok {
+						return "", errors.New("argument for %x is not an int")
+					}
+					str, err := IntToString(intVal, 16)
+					if err != nil {
+						return "", err
+					}
+					result = append(result, []byte(str)...)
+					argIndex++
+				case 'b':
+					if argIndex >= len(args) {
+						return "", errors.New("missing argument for %b")
+					}
+					intVal, ok := args[argIndex].(int)
+					if !ok {
+						return "", errors.New("argument for %b is not an int")
+					}
+					str, err := IntToString(intVal, 2)
+					if err != nil {
+						return "", err
+					}
+					result = append(result, []byte(str)...)
+					argIndex++
+				case 'o':
+					if argIndex >= len(args) {
+						return "", errors.New("missing argument for %o")
+					}
+					intVal, ok := args[argIndex].(int)
+					if !ok {
+						return "", errors.New("argument for %o is not an int")
+					}
+					str, err := IntToString(intVal, 8)
+					if err != nil {
+						return "", err
+					}
+					result = append(result, []byte(str)...)
+					argIndex++
 				default:
-					result = append(result, format[i])
+					return "", errors.New("unknown format specifier")
 				}
 				i++
 			} else {
