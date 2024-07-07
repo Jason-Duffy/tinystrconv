@@ -5,19 +5,19 @@ import (
 )
 
 // FloatToString converts a float to its string representation with the specified precision.
-func FloatToString(f float64, precision int) (string, error) {
-	if f != f { // NaN
+func FloatToString(value float64, precision int) (string, error) {
+	if value != value { // NaN
 		return "", errors.New("cannot convert NaN to string")
 	}
 
-	neg := f < 0
-	if neg {
-		f = -f
+	isNegative := value < 0
+	if isNegative {
+		value = -value
 	}
 
-	intPart := int64(f)
-	fracPart := f - float64(intPart)
-	result, err := IntToString(int(intPart), 10)
+	integerPart := int64(value)
+	fractionPart := value - float64(integerPart)
+	result, err := IntToString(int(integerPart), 10)
 	if err != nil {
 		return "", err
 	}
@@ -25,21 +25,21 @@ func FloatToString(f float64, precision int) (string, error) {
 	if precision > 0 {
 		result += "."
 		for i := 0; i < precision; i++ {
-			fracPart *= 10
-			digit := int64(fracPart)
+			fractionPart *= 10
+			digit := int64(fractionPart)
 			result += string('0' + rune(digit))
-			fracPart -= float64(digit)
+			fractionPart -= float64(digit)
 		}
 		// Perform rounding if necessary
-		fracPart *= 10
-		if int64(fracPart) >= 5 {
+		fractionPart *= 10
+		if int64(fractionPart) >= 5 {
 			result = roundUp(result)
 		}
 	} else {
 		result += ".0"
 	}
 
-	if neg {
+	if isNegative {
 		result = "-" + result
 	}
 
@@ -47,48 +47,48 @@ func FloatToString(f float64, precision int) (string, error) {
 }
 
 // StringToFloat converts a string representation of a float to a float64.
-func StringToFloat(s string) (float64, error) {
-	if len(s) == 0 {
+func StringToFloat(input string) (float64, error) {
+	if len(input) == 0 {
 		return 0, errors.New("input string is empty")
 	}
 
-	neg := false
-	if s[0] == '-' {
-		neg = true
-		s = s[1:]
+	isNegative := false
+	if input[0] == '-' {
+		isNegative = true
+		input = input[1:]
 	}
 
-	intPartStr := ""
-	fracPartStr := ""
+	integerPartStr := ""
+	fractionPartStr := ""
 	decimalPointSeen := false
-	for i := 0; i < len(s); i++ {
-		if s[i] == '.' {
+	for i := 0; i < len(input); i++ {
+		if input[i] == '.' {
 			if decimalPointSeen {
 				return 0, errors.New("invalid float string")
 			}
 			decimalPointSeen = true
 		} else if decimalPointSeen {
-			fracPartStr += string(s[i])
+			fractionPartStr += string(input[i])
 		} else {
-			intPartStr += string(s[i])
+			integerPartStr += string(input[i])
 		}
 	}
 
-	intPart, err := StringToInt(intPartStr, 10)
+	integerPart, err := StringToInt(integerPartStr, 10)
 	if err != nil {
 		return 0, err
 	}
 
-	var fracPart float64
-	fracDivisor := 1.0
-	for i := 0; i < len(fracPartStr); i++ {
-		fracPart = fracPart*10 + float64(fracPartStr[i]-'0')
-		fracDivisor *= 10
+	var fractionPart float64
+	fractionDivisor := 1.0
+	for i := 0; i < len(fractionPartStr); i++ {
+		fractionPart = fractionPart*10 + float64(fractionPartStr[i]-'0')
+		fractionDivisor *= 10
 	}
-	fracPart /= fracDivisor
+	fractionPart /= fractionDivisor
 
-	result := float64(intPart) + fracPart
-	if neg {
+	result := float64(integerPart) + fractionPart
+	if isNegative {
 		result = -result
 	}
 
@@ -96,9 +96,9 @@ func StringToFloat(s string) (float64, error) {
 }
 
 // roundUp handles rounding up the last digit if necessary.
-func roundUp(s string) string {
+func roundUp(input string) string {
 	carry := true
-	result := []byte(s)
+	result := []byte(input)
 	for i := len(result) - 1; i >= 0 && carry; i-- {
 		if result[i] == '.' {
 			continue
