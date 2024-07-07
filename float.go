@@ -1,8 +1,30 @@
+// =============================================================================
+// Project: tinystrconv
+// File: float.go
+// Description: Functions for float conversion.
+// Datasheet/Docs:
+//
+// Author: Jason Duffy
+// Created on: 06/07/2024
+//
+// Copyright: (C) 2024, Jason Duffy
+// License: See LICENSE file in the project root for full license information.
+// Disclaimer: See DISCLAIMER file in the project root for full disclaimer.
+// =============================================================================
+
+// -------------------------------------------------------------------------- //
+//                               Import Statement                             //
+// -------------------------------------------------------------------------- //
+
 package tinystrconv
 
 import (
 	"errors"
 )
+
+// -------------------------------------------------------------------------- //
+//                              Public Functions                              //
+// -------------------------------------------------------------------------- //
 
 // FloatToString converts a float to its string representation with the specified precision.
 func FloatToString(value float64, precision int) (string, error) {
@@ -108,6 +130,10 @@ func StringToFloat(input string) (float64, error) {
 
 	return result, nil
 }
+
+// -------------------------------------------------------------------------- //
+//                          Private Helper Functions                          //
+// -------------------------------------------------------------------------- //
 
 // roundUp handles rounding up the last digit if necessary.
 func roundUp(input string) string {

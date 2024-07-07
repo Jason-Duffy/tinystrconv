@@ -1,6 +1,28 @@
+// =============================================================================
+// Project: tinystrconv
+// File: quote_test.go
+// Description: Test suite for quote conversion functions.
+// Datasheet/Docs:
+//
+// Author: Jason Duffy
+// Created on: 06/07/2024
+//
+// Copyright: (C) 2024, Jason Duffy
+// License: See LICENSE file in the project root for full license information.
+// Disclaimer: See DISCLAIMER file in the project root for full disclaimer.
+// =============================================================================
+
+// -------------------------------------------------------------------------- //
+//                               Import Statement                             //
+// -------------------------------------------------------------------------- //
+
 package tinystrconv
 
 import "testing"
+
+// -------------------------------------------------------------------------- //
+//                              Public Functions                              //
+// -------------------------------------------------------------------------- //
 
 // TestQuoteString tests the QuoteString function for converting strings to their quoted representations.
 func TestQuoteString(t *testing.T) {
