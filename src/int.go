@@ -41,7 +41,18 @@ func IntToString(number int, base int) (string, error) {
 		result[left], result[right] = result[right], result[left]
 	}
 
-	return string(result), nil
+	// Add base prefix
+	prefix := ""
+	switch base {
+	case 2:
+		prefix = "0b"
+	case 8:
+		prefix = "0o"
+	case 16:
+		prefix = "0x"
+	}
+
+	return prefix + string(result), nil
 }
 
 // StringToInt converts a string representation of an integer in the specified base to an int.
@@ -57,6 +68,22 @@ func StringToInt(s string, base int) (int, error) {
 		}
 		isNegative = true
 		s = s[1:]
+	}
+
+	// Remove base prefix
+	switch base {
+	case 2:
+		if len(s) > 2 && s[:2] == "0b" {
+			s = s[2:]
+		}
+	case 8:
+		if len(s) > 2 && s[:2] == "0o" {
+			s = s[2:]
+		}
+	case 16:
+		if len(s) > 2 && s[:2] == "0x" {
+			s = s[2:]
+		}
 	}
 
 	var result int
