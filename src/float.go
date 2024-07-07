@@ -35,6 +35,8 @@ func FloatToString(value float64, precision int) (string, error) {
 		if int64(fractionPart) >= 5 {
 			result = roundUp(result)
 		}
+	} else if precision == 0 {
+		// Do nothing, avoid adding ".0"
 	} else {
 		result += ".0"
 	}
