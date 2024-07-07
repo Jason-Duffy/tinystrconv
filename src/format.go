@@ -88,6 +88,31 @@ func Format(format string, args ...interface{}) (string, error) {
 					}
 					result = append(result, []byte(str)...)
 					argIndex++
+				case 'o':
+					if argIndex >= len(args) {
+						return "", errors.New("missing argument for %o")
+					}
+					intVal, ok := args[argIndex].(int)
+					if !ok {
+						return "", errors.New("argument for %o is not an int")
+					}
+					str, err := IntToString(intVal, 8)
+					if err != nil {
+						return "", err
+					}
+					result = append(result, []byte(str)...)
+					argIndex++
+				case 'v':
+					if argIndex >= len(args) {
+						return "", errors.New("missing argument for %v")
+					}
+					boolVal, ok := args[argIndex].(bool)
+					if !ok {
+						return "", errors.New("argument for %v is not a bool")
+					}
+					str := BoolToString(boolVal)
+					result = append(result, []byte(str)...)
+					argIndex++
 				case 's':
 					if argIndex >= len(args) {
 						return "", errors.New("missing argument for %s")
