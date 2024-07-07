@@ -1,3 +1,21 @@
+// =============================================================================
+// Project: tinystrconv
+// File: float_test.go
+// Description: Test suite for float conversion functions.
+// Datasheet/Docs:
+//
+// Author: Jason Duffy
+// Created on: 06/07/2024
+//
+// Copyright: (C) 2024, Jason Duffy
+// License: See LICENSE file in the project root for full license information.
+// Disclaimer: See DISCLAIMER file in the project root for full disclaimer.
+// =============================================================================
+
+// -------------------------------------------------------------------------- //
+//                               Import Statement                             //
+// -------------------------------------------------------------------------- //
+
 package tinystrconv
 
 import (
@@ -5,7 +23,15 @@ import (
 	"testing"
 )
 
+// -------------------------------------------------------------------------- //
+//               Private Consts, Structs & Variable Definitions               //
+// -------------------------------------------------------------------------- //
+
 const epsilon = 0.0000001 // Tolerance for floating-point comparison
+
+// -------------------------------------------------------------------------- //
+//                              Public Functions                              //
+// -------------------------------------------------------------------------- //
 
 func TestFloatToString(t *testing.T) {
 	testCases := []struct {
@@ -66,6 +92,10 @@ func TestStringToFloat(t *testing.T) {
 		}
 	}
 }
+
+// -------------------------------------------------------------------------- //
+//                          Private Helper Functions                          //
+// -------------------------------------------------------------------------- //
 
 func floatEquals(a, b, epsilon float64) bool {
 	return (a-b) < epsilon && (b-a) < epsilon
