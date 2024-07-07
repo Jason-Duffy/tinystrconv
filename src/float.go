@@ -1,15 +1,19 @@
 package tinystrconv
 
+import (
+	"errors"
+)
+
 // FloatToString converts a float to its string representation with the specified precision.
 func FloatToString(f float64, precision int) (string, error) {
-	if f != f {
-		return "NaN", nil
+	if f != f { // NaN
+		return "", errors.New("cannot convert NaN to string")
 	}
-	if f > 1.7976931348623157e+308 {
-		return "+Inf", nil
+	if f > 1.7976931348623157e+308 { // +Inf
+		return "", errors.New("cannot convert +Inf to string")
 	}
-	if f < -1.7976931348623157e+308 {
-		return "-Inf", nil
+	if f < -1.7976931348623157e+308 { // -Inf
+		return "", errors.New("cannot convert -Inf to string")
 	}
 
 	neg := f < 0
