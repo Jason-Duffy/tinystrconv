@@ -20,6 +20,10 @@ package tinystrconv
 
 import "testing"
 
+// -------------------------------------------------------------------------- //
+//                              Public Functions                              //
+// -------------------------------------------------------------------------- //
+
 // TestBoolToString tests the BoolToString function for converting booleans to strings.
 func TestBoolToString(t *testing.T) {
 	testCases := []struct {
