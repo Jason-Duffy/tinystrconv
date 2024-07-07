@@ -1,12 +1,39 @@
+// =============================================================================
+// Project: tinystrconv
+// File: helpers.go
+// Description: Helper functions for string conversion.
+// Datasheet/Docs:
+//
+// Author: Jason Duffy
+// Created on: 06/07/2024
+//
+// Copyright: (C) 2024, Jason Duffy
+// License: See LICENSE file in the project root for full license information.
+// Disclaimer: See DISCLAIMER file in the project root for full disclaimer.
+// =============================================================================
+
+// -------------------------------------------------------------------------- //
+//                               Import Statement                             //
+// -------------------------------------------------------------------------- //
+
 package tinystrconv
 
 import (
 	"errors"
 )
 
+// -------------------------------------------------------------------------- //
+//               Private Consts, Structs & Variable Definitions               //
+// -------------------------------------------------------------------------- //
+
 const digitCharacters = "0123456789abcdefghijklmnopqrstuvwxyz"
 
-// toStringHelper is a helper function that converts an unsigned integer to its string representation in the specified base.
+// -------------------------------------------------------------------------- //
+//                          Private Helper Functions                          //
+// -------------------------------------------------------------------------- //
+
+// toStringHelper is a helper function that converts an unsigned integer to its
+// string representation in the specified base.
 func toStringHelper(number uint64, base int, isNegative bool) (string, error) {
 	if base < 2 || base > len(digitCharacters) {
 		return "", errors.New("unsupported base")
@@ -46,7 +73,8 @@ func toStringHelper(number uint64, base int, isNegative bool) (string, error) {
 	return prefix + string(result), nil
 }
 
-// stringToNumberHelper is a helper function that converts a string representation of an unsigned integer in the specified base to a uint64.
+// stringToNumberHelper is a helper function that converts a string
+// representation of an unsigned integer in the specified base to a uint64.
 func stringToNumberHelper(input string, base int) (uint64, error) {
 	if base < 2 || base > len(digitCharacters) {
 		return 0, errors.New("unsupported base")
