@@ -14,14 +14,16 @@ func TestFloatToString(t *testing.T) {
 		want      string
 		shouldErr bool
 	}{
-		{0.0, 2, "0.00", false},              // Test formatting zero with precision 2
-		{3.14, 2, "3.14", false},             // Test formatting positive float with precision 2
-		{-2.718, 3, "-2.718", false},         // Test formatting negative float with precision 3
-		{1.23456789, 8, "1.23456789", false}, // Test formatting float with precision 8
-		{1234567.89, 2, "1234567.89", false}, // Test formatting large float with precision 2
-		{math.NaN(), 2, "", true},            // Test formatting NaN
-		{0.0, 0, "0", false},                 // Test formatting zero with precision 0
-		{123.456, 0, "123", false},           // Test formatting float with precision 0
+		{0.0, 2, "0.00", false},                               // Test formatting zero with precision 2
+		{3.141592653589793, -1, "3.141592653589793", false},   // Full precision positive float
+		{-2.718281828459045, -1, "-2.718281828459045", false}, // Full precision negative float
+		{3.14, 2, "3.14", false},                              // Test formatting positive float with precision 2
+		{-2.718, 3, "-2.718", false},                          // Test formatting negative float with precision 3
+		{1.23456789, 8, "1.23456789", false},                  // Test formatting float with precision 8
+		{1234567.89, 2, "1234567.89", false},                  // Test formatting large float with precision 2
+		{0.0, 0, "0", false},                                  // Test formatting zero with precision 0
+		{123.456, 0, "123", false},                            // Test formatting float with precision 0
+		{math.NaN(), 2, "", true},                             // Test formatting NaN
 	}
 
 	for _, testCase := range testCases {
@@ -59,8 +61,12 @@ func TestStringToFloat(t *testing.T) {
 			t.Errorf("StringToFloat(%s) error = %v, wantErr %v", testCase.input, err, testCase.shouldErr)
 			continue
 		}
-		if math.Abs(got-testCase.want) > epsilon {
+		if !floatEquals(got, testCase.want, epsilon) {
 			t.Errorf("StringToFloat(%s) = %f, want %f", testCase.input, got, testCase.want)
 		}
 	}
+}
+
+func floatEquals(a, b, epsilon float64) bool {
+	return (a-b) < epsilon && (b-a) < epsilon
 }

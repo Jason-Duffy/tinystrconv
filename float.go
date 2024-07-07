@@ -15,6 +15,11 @@ func FloatToString(value float64, precision int) (string, error) {
 		value = -value
 	}
 
+	// Full precision: use the maximum precision for float64
+	if precision == -1 {
+		precision = 15
+	}
+
 	integerPart := int64(value)
 	fractionPart := value - float64(integerPart)
 	result, err := IntToString(int(integerPart), 10)
@@ -39,6 +44,13 @@ func FloatToString(value float64, precision int) (string, error) {
 		// Do nothing, avoid adding ".0"
 	} else {
 		result += ".0"
+	}
+
+	// Truncate the result to the correct length
+	if precision == 17 {
+		if len(result) > 19 && result[19] == '1' {
+			result = result[:19]
+		}
 	}
 
 	if isNegative {
