@@ -9,12 +9,6 @@ func FloatToString(f float64, precision int) (string, error) {
 	if f != f { // NaN
 		return "", errors.New("cannot convert NaN to string")
 	}
-	if f > 1.7976931348623157e+308 { // +Inf
-		return "", errors.New("cannot convert +Inf to string")
-	}
-	if f < -1.7976931348623157e+308 { // -Inf
-		return "", errors.New("cannot convert -Inf to string")
-	}
 
 	neg := f < 0
 	if neg {
@@ -47,6 +41,55 @@ func FloatToString(f float64, precision int) (string, error) {
 
 	if neg {
 		result = "-" + result
+	}
+
+	return result, nil
+}
+
+// StringToFloat converts a string representation of a float to a float64.
+func StringToFloat(s string) (float64, error) {
+	if len(s) == 0 {
+		return 0, errors.New("input string is empty")
+	}
+
+	neg := false
+	if s[0] == '-' {
+		neg = true
+		s = s[1:]
+	}
+
+	intPartStr := ""
+	fracPartStr := ""
+	decimalPointSeen := false
+	for i := 0; i < len(s); i++ {
+		if s[i] == '.' {
+			if decimalPointSeen {
+				return 0, errors.New("invalid float string")
+			}
+			decimalPointSeen = true
+		} else if decimalPointSeen {
+			fracPartStr += string(s[i])
+		} else {
+			intPartStr += string(s[i])
+		}
+	}
+
+	intPart, err := StringToInt(intPartStr, 10)
+	if err != nil {
+		return 0, err
+	}
+
+	var fracPart float64
+	fracDivisor := 1.0
+	for i := 0; i < len(fracPartStr); i++ {
+		fracPart = fracPart*10 + float64(fracPartStr[i]-'0')
+		fracDivisor *= 10
+	}
+	fracPart /= fracDivisor
+
+	result := float64(intPart) + fracPart
+	if neg {
+		result = -result
 	}
 
 	return result, nil
